@@ -1,6 +1,6 @@
 <?php
-    
-    namespace Borica;
+
+    namespace Fundamental\Borica;
 
     use Carbon\Carbon;
     use Borica\Exceptions\InvalidAmountException;
@@ -42,6 +42,14 @@
             '41' => 'payedProfitReversal'
         ];
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $language
+         * @param [type] $currency
+         * @param [type] $protocolVersion
+         * @param [type] $ott
+         */
         public function __construct($language = null, $currency = null, $protocolVersion = null, $ott = null)
         {
             $this->terminalID = config('borica.terminal_id');
@@ -49,7 +57,7 @@
 
             $this->privateKey = config('borica.pk');
             $this->privateKeyPass = config('borica.pk_pass');
-            
+
             $this->protocolVersion = $this->protocol($protocolVersion);
             $this->ott = $this->ott($ott);
 
@@ -57,6 +65,11 @@
             $this->currency = $this->currency($currency);
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         protected function generateMessage()
         {
             $protocolVersion = $this->getProtocolVersion();
@@ -83,6 +96,15 @@
             return $data;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $dt
+         * @param String $format
+         * @param String $tz
+         * @param Bool $isTimestamp
+         * @return Borica
+         */
         public function dateTime($dt, String $format = null, String $tz = null, Bool $isTimestamp = false) : Borica
         {
             if ($format != null) {
@@ -104,6 +126,11 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         public function getDateTime() : String
         {
             $dtFormat = 'YmdHis';
@@ -115,11 +142,17 @@
             return $this->dt->format($dtFormat);
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $language
+         * @return Borica
+         */
         public function language(String $language) : Borica
         {
             $userLanguage = strtoupper($language);
 
-            if (in_array($userLanguage, SUPPORTED_LANGUAGES))
+            if (in_array($userLanguage, $this::SUPPORTED_LANGUAGES))
             {
                 $this->language = $userLanguage;
             }
@@ -127,16 +160,27 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         public function getLanguage() : String
         {
             return $this->getLanguage();
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $currency
+         * @return Borica
+         */
         public function currency(String $currency) : Borica
         {
             $currency = strtoupper($currency);
 
-            if (in_array($currency, SUPPORTED_CURRENCIES))
+            if (in_array($currency, $this::SUPPORTED_CURRENCIES))
             {
                 $this->currency = $currency;
             }
@@ -144,19 +188,35 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         public function getCurrency() : String
         {
             return $this->currency;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         public function getTerminalID() : String
         {
             return $this->terminalID;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $protocol
+         * @return String
+         */
         public function protocol(String $protocol) : String
         {
-            if (in_array($protocol, PROTOCOL_VERSIONS))
+            if (in_array($protocol, $this::PROTOCOL_VERSIONS))
             {
                 $this->protocolVersion = $protocol;
             }
@@ -164,6 +224,12 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param float $amount
+         * @return Borica
+         */
         public function amount(float $amount) : Borica
         {
             if (!is_numeric($amount)) {
@@ -171,10 +237,16 @@
             }
 
             $this->amount = str_pad($amount, 12 , "0", STR_PAD_LEFT);
-            
+
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param array $order
+         * @return Borica
+         */
         public function order(array $order) : Borica
         {
             $this->orderID($order['id']);
@@ -183,6 +255,12 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $id
+         * @return Borica
+         */
         public function orderID(String $id) : Borica
         {
             $length = strlen($id);
@@ -193,7 +271,13 @@
 
             return $this;
         }
-        
+
+        /**
+         * Undocumented function
+         *
+         * @param String $description
+         * @return Borica
+         */
         public function orderDescription(String $description) : Borica
         {
             $this->orderDescription = str_pad(substr($description, 0, 125), 125);
@@ -201,6 +285,12 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $ott
+         * @return Borica
+         */
         public function ott(String $ott) : Borica
         {
             $this->ott = str_pad($ott, 6);
@@ -208,20 +298,37 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return Bool
+         */
         public function getGatewayEndpoint() : Bool
         {
             return (bool) ($this->isProduction) ? $this->gatewayUrl : $this->testGatewayUrl;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param integer $code
+         * @return Borica
+         */
         public function transactionCode(int $code) : Borica
         {
-            if (in_array((String) $code, TRANSACTION_CODES)) {
+            if (in_array((String) $code, $this::TRANSACTION_CODES)) {
                 $this->transactionCode = $code;
             }
 
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $message
+         * @return String
+         */
         public function sign($message) : String
         {
             $signature = '';
@@ -234,9 +341,14 @@
             openssl_sign($message, $signature, $pKeyID);
             openssl_free_key($pKeyID);
 
-            return $message . $signature;    
+            return $message . $signature;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         protected function getPrivateKey() : String
         {
             $fp = fopen($this->privateKey, 'r');
@@ -246,6 +358,12 @@
             return $pk;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param String $type
+         * @return void
+         */
         public function payment(String $type)
         {
 

@@ -1,6 +1,6 @@
 <?php
 
-    namespace Borica;
+    namespace Fundamenta\Borica;
 
     use Carbon\Carbon;
 
@@ -15,15 +15,24 @@
 		const PROTOCOL_VERSION = 'PROTOCOL_VERSION';
 		const SIGN = 'SIGN';
         const SIGNATURE_OK = 'SIGNATURE_OK';
-        
+
         private $response = [];
         private $publicCert;
-        
+
+        /**
+         * Undocumented function
+         */
         public function __construct()
         {
             $this->publicCert = config('borica.cert');
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $message
+         * @return Borica
+         */
         public function parse($message) : Borica
         {
             $message = base64_decode($message);
@@ -44,6 +53,13 @@
             return $this;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $message
+         * @param [type] $sign
+         * @return void
+         */
         protected function verify($message, $sign)
         {
             $publicKey = openssl_get_fppublickey($this->getCertificate());
@@ -53,6 +69,11 @@
             return $verification;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return String
+         */
         protected function getCertificate() : String
         {
             $fp = fopen($this->publicCert, 'r');
@@ -62,41 +83,81 @@
             return $cert;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function getTransactionCode()
         {
             return $this->response[self::TRANSACTION_CODE];
         }
-        
+
+        /**
+         * Undocumented function
+         *
+         * @return Carbon
+         */
         public function getTransactionTime() : Carbon
         {
             return Carbon::createFromFormat('YmdHis', $this->response[self::TRANSACTTION_TIME]);
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function getAmount()
         {
             return (float) $this->response[self::AMOUNT] / 100;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function getTerminalID()
         {
             return $this->response[self::TERMINAL_ID];
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function getOrderID()
         {
             return $this->response[self::ORDER_ID];
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function getResponseCode()
         {
             return $this->response[self::RESPONSE_CODE];
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function isSuccessful()
         {
             return (bool) $this->getResponseCode() === '00';
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return void
+         */
         public function get()
         {
             return $this->response;
