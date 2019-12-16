@@ -9,7 +9,7 @@ The package is compatible with Laravel 5.8+ version.
 
 Via composer:
 ``` bash
-$ composer require fmtl-studio/laravel-Borica
+$ composer require fmtl-studio/laravel-borica
 ```
 
 After installing, the package should be auto-discovered by Laravel.
@@ -20,7 +20,11 @@ $ php artisan vendor:publish --provider="Fundamental\Borica\BoricaServiceProvide
 
 After publishing the config file, you should either add the needed keys to the global .env Laravel file:
 ```
-
+BORICA_TERMINAL_ID=XXXXXXXXXX # Terminal ID, obtained from your bank or Borica Service
+BORICA_PRODUCTION=FALSE # Should the platform use the production or the test Borica endpoint
+BORICA_PRIVATE_KEY= # Location of your private key file, make sure it is not available to public
+BORICA_PRIVATE_KEY_PASS= # Location of your private key password, make sure it this file is not available to public
+BORICA_CERTIFICATE= # Location of your certificate file, make sure it is not available to public
 ```
 
 You are up & running and ready to go.

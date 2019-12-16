@@ -28,7 +28,7 @@
             $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-borica');
 
             config([
-                'config/config.php'
+                'config/laravel-borica.php'
             ]);
         }
     }

@@ -24,7 +24,7 @@
          */
         public function __construct()
         {
-            $this->publicCert = config('borica.cert');
+            $this->publicCert = config('certificate');
         }
 
         /**
