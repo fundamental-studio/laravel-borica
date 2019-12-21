@@ -70,27 +70,27 @@ class Request
      *
      * @return void
      */
-    protected function generateMessage()
+    public function generateRequestArray()
     {
         $protocolVersion = $this->getProtocolVersion();
 
         $data = [
-            $this->getTransactionCode(),
-            $this->getDateTime(),
-            $this->getAmount(),
-            $this->getTerminalID(),
-            $this->getOrderID(),
-            $this->getOrderDescription(),
-            $this->getLanguage(),
-            $protocolVersion
+            'transactionCode'   => $this->getTransactionCode(),
+            'dateTime'          => $this->getDateTime(),
+            'amount'            => str_pad($this->getAmount() * 100, 12, "0", STR_PAD_LEFT),
+            'terminalID'        => $this->getTerminalID(),
+            'orderID'           => str_pad(substr($this->getOrderID(), 0, 15), 15),
+            'orderDescription'  => str_pad(substr($this->getOrderDescription(), 0, 15), 15),
+            'language'          => $this->getLanguage(),
+            'protocolVersion'   => $protocolVersion
         ];
 
         if ($protocolVersion != '1.0') {
-            $data[] = $this->getCurrency();
+            $data['currency'] = $this->getCurrency();
         }
 
         if ($protocolVersion == '2.0') {
-            $data[] = str_pad($this->ott, 6);
+            $data['ott'] = str_pad($this->getOtt(), 6);
         }
 
         return $data;
@@ -168,6 +168,56 @@ class Request
     public function getLanguage() : String
     {
         return $this->language;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return String
+     */
+    public function getOrderID() : String
+    {
+        return $this->orderID;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return String
+     */
+    public function getOrderDescription() : String
+    {
+        return $this->orderDescription;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return String
+     */
+    public function getProtocolVersion() : String
+    {
+        return $this->protocolVersion;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return String
+     */
+    public function getOtt() : String
+    {
+        return $this->ott;
     }
 
     /**
@@ -323,6 +373,11 @@ class Request
         return $this;
     }
 
+    public function getTransactionCode()
+    {
+        return $this->transactionCode;
+    }
+
     /**
      * Undocumented function
      *
@@ -364,8 +419,16 @@ class Request
      * @param String $type
      * @return void
      */
-    public function payment(String $type)
+    public function generate()
     {
-        //
+        $message = '';
+        $requestData = $this->generateRequestArray();
+
+        foreach ($requestData as $key => $parameter)
+        {
+            $message .= $parameter;
+        }
+
+        return $this->sign($message);
     }
 }
