@@ -52,7 +52,7 @@ class Request
      */
     public function __construct($language = null, $currency = null, $protocolVersion = null, $ott = null)
     {
-        $this->terminalID = config('terminalId');
+        $this->terminalID = config('terminalID');
         $this->isProduction = config('production');
 
         $this->privateKey = config('privateKey');
