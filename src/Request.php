@@ -45,10 +45,10 @@ class Request
     /**
      * Undocumented function
      *
-     * @param [type] $language
-     * @param [type] $currency
-     * @param [type] $protocolVersion
-     * @param [type] $ott
+     * @param String $language
+     * @param String $currency
+     * @param String $protocolVersion
+     * @param String $ott
      */
     public function __construct($language = null, $currency = null, $protocolVersion = null, $ott = null)
     {
@@ -68,9 +68,9 @@ class Request
     /**
      * Undocumented function
      *
-     * @return void
+     * @return Array
      */
-    public function generateRequestArray()
+    public function generateRequestArray() : array
     {
         $protocolVersion = $this->getProtocolVersion();
 
