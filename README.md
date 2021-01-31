@@ -5,18 +5,20 @@ Made with love and code by [Fundamental Studio Ltd.](https://www.fundamental.bg)
 
 ## Installation
 
-The package is compatible with Laravel 5.8+ version.
+The package is compatible with Laravel 7+ version.
 
 Via composer:
 ``` bash
 $ composer require fmtl-studio/laravel-borica
 ```
 
+### Pubslish the provider
 After installing, the package should be auto-discovered by Laravel.
 In order to configurate the package, you need to publish the config file using this command:
 ``` bash
 $ php artisan vendor:publish --provider="Fundamental\Borica\BoricaServiceProvider"
 ```
+### Config
 
 After publishing the config file, you should either add the needed keys to the global .env Laravel file:
 ```
